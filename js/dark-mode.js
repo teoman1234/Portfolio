@@ -1,23 +1,26 @@
 /**
  * Dark Mode Toggle
- * Tema değiştirme işlevselliği
  */
 
-const darkModeToggle = document.getElementById('darkModeToggle');
+// FOUC önleme: sayfa yüklenmeden önce dark mode uygula
+(function() {
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+    }
+})();
 
-// Dark mode durumunu localStorage'dan kontrol et
-const isDarkMode = localStorage.getItem('darkMode') === 'true';
+document.addEventListener('DOMContentLoaded', () => {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    if (!darkModeToggle) return;
 
-if (isDarkMode) {
-    document.body.classList.add('dark-mode');
-    darkModeToggle.textContent = '☀️';
-}
-
-// Dark mode toggle
-darkModeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
+    const toggleLabel = darkModeToggle.querySelector('.toggle-label');
     const isDark = document.body.classList.contains('dark-mode');
+    if (toggleLabel) toggleLabel.textContent = isDark ? 'Light' : 'Dark';
 
-    localStorage.setItem('darkMode', isDark);
-    darkModeToggle.textContent = isDark ? '☀️' : '🌙';
+    darkModeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const nowDark = document.body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', nowDark);
+        if (toggleLabel) toggleLabel.textContent = nowDark ? 'Light' : 'Dark';
+    });
 });

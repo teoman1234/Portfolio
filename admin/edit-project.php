@@ -5,34 +5,31 @@
 
 include '../includes/db-config.php';
 
-// Session kontrolü
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: /PortofiloProject/admin/login.php');
+    header('Location: /PortfolioProject/admin/login.php');
     exit;
 }
 
 $project_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 if ($project_id === 0) {
-    header('Location: /PortofiloProject/admin/dashboard.php');
+    header('Location: /PortfolioProject/admin/dashboard.php');
     exit;
 }
 
-// Projeyi getir
 try {
     $stmt = $pdo->prepare('SELECT id, title, description, technologies, link FROM projects WHERE id = ?');
     $stmt->execute([$project_id]);
     $project = $stmt->fetch();
 
     if (!$project) {
-        header('Location: /PortofiloProject/admin/dashboard.php');
+        header('Location: /PortfolioProject/admin/dashboard.php');
         exit;
     }
 } catch (PDOException $e) {
     die('Database error: ' . $e->getMessage());
 }
 
-// Form submit
 $error = '';
 $success = false;
 
@@ -41,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $description = isset($_POST['description']) ? trim($_POST['description']) : '';
     $technologies = isset($_POST['technologies']) ? trim($_POST['technologies']) : '';
     $link = isset($_POST['link']) ? trim($_POST['link']) : null;
+    $link = $link === '' ? null : $link;
 
     if (empty($title) || empty($description)) {
         $error = 'Title and description are required';
@@ -49,8 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare('UPDATE projects SET title = ?, description = ?, technologies = ?, link = ? WHERE id = ?');
             $stmt->execute([$title, $description, $technologies, $link, $project_id]);
             $success = true;
-            
-            // Güncellenen veriyi getir
+
             $stmt = $pdo->prepare('SELECT id, title, description, technologies, link FROM projects WHERE id = ?');
             $stmt->execute([$project_id]);
             $project = $stmt->fetch();
@@ -63,132 +60,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Project</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <style>
-        .admin-header {
-            background: linear-gradient(135deg, #2563eb, #1e40af);
-            color: white;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .edit-container {
-            max-width: 700px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-        .form-section {
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        .form-group {
-            margin-bottom: 25px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e5e7eb;
-            border-radius: 5px;
-            font-family: inherit;
-            font-size: 1rem;
-        }
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #2563eb;
-        }
-        .btn-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-        }
-        .btn {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 5px;
-            font-weight: 600;
-            cursor: pointer;
-            flex: 1;
-        }
-        .btn-save {
-            background: #10b981;
-            color: white;
-        }
-        .btn-cancel {
-            background: #e5e7eb;
-            color: #1f2937;
-        }
-        .error {
-            color: #ef4444;
-            background: #fee2e2;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        .success {
-            color: #10b981;
-            background: #dcfce7;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-    </style>
+    <?php $adminPageTitle = 'Edit Project'; include '../includes/admin-head.php'; ?>
 </head>
-<body>
+<body class="admin-page">
+    <?php include '../includes/nav.php'; ?>
+
     <div class="admin-header">
-        <h1>Edit Project</h1>
-        <a href="logout.php" style="color: white; text-decoration: none;">Logout</a>
-    </div>
-
-    <div class="edit-container">
-        <?php if ($error): ?>
-            <div class="error"><?php echo htmlspecialchars($error); ?></div>
-        <?php endif; ?>
-
-        <?php if ($success): ?>
-            <div class="success">✅ Project updated successfully!</div>
-        <?php endif; ?>
-
-        <div class="form-section">
-            <form method="POST">
-                <div class="form-group">
-                    <label for="title">Title *</label>
-                    <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($project['title']); ?>" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="description">Description *</label>
-                    <textarea id="description" name="description" rows="5" required><?php echo htmlspecialchars($project['description']); ?></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="technologies">Technologies</label>
-                    <input type="text" id="technologies" name="technologies" placeholder="e.g. PHP, MySQL, JavaScript" value="<?php echo htmlspecialchars($project['technologies']); ?>">
-                </div>
-
-                <div class="form-group">
-                    <label for="link">Project Link (optional)</label>
-                    <input type="url" id="link" name="link" value="<?php echo htmlspecialchars($project['link'] ?? ''); ?>">
-                </div>
-
-                <div class="btn-group">
-                    <button type="submit" class="btn btn-save">Save Changes</button>
-                    <a href="/PortofiloProject/admin/dashboard.php" class="btn btn-cancel" style="text-decoration: none; display: flex; align-items: center; justify-content: center;">Cancel</a>
-                </div>
-            </form>
+        <div>
+            <h1 data-i18n="admin.edit.title">Edit Project</h1>
         </div>
     </div>
+
+    <div class="admin-container">
+        <div style="max-width: 700px; margin: 0 auto;">
+            <?php if ($error): ?>
+                <div class="login-error" style="margin-bottom: var(--spacing-2xl);"><?php echo htmlspecialchars($error); ?></div>
+            <?php endif; ?>
+
+            <?php if ($success): ?>
+                <div style="display:flex; align-items:center; gap:8px; color: var(--success-color); background-color: rgba(22, 163, 74, 0.1); border: 1px solid var(--success-color); padding: var(--spacing-lg); border-radius: var(--radius-lg); margin-bottom: var(--spacing-2xl);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span data-i18n="admin.edit.success">Project updated successfully!</span>
+                </div>
+            <?php endif; ?>
+
+            <div style="background: var(--bg-white); padding: var(--spacing-2xl); border-radius: var(--radius-xl); box-shadow: var(--shadow-lg);">
+                <form method="POST" class="admin-form">
+                    <div class="form-group">
+                        <label for="title" data-i18n="admin.form.title">Title *</label>
+                        <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($project['title']); ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description" data-i18n="admin.form.description">Description *</label>
+                        <textarea id="description" name="description" rows="5" required><?php echo htmlspecialchars($project['description']); ?></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="technologies" data-i18n="admin.form.technologies">Technologies</label>
+                        <input type="text" id="technologies" name="technologies" value="<?php echo htmlspecialchars($project['technologies']); ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="link" data-i18n="admin.form.link">Project Link (optional)</label>
+                        <input type="url" id="link" name="link" value="<?php echo htmlspecialchars($project['link'] ?? ''); ?>">
+                    </div>
+                    <div class="admin-form-actions">
+                        <a href="/PortfolioProject/admin/dashboard.php" class="btn btn-secondary" data-i18n="admin.action.cancel">Cancel</a>
+                        <button type="submit" class="btn btn-success">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                            <span data-i18n="admin.edit.save">Save Changes</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/PortfolioProject/js/i18n.js"></script>
+    <script src="/PortfolioProject/js/main.js"></script>
+    <script src="/PortfolioProject/js/dark-mode.js"></script>
 </body>
 </html>

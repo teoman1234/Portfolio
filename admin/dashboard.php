@@ -1,18 +1,15 @@
 <?php
 /**
  * Admin - Dashboard
- * Admin paneli - Projeler yönetimi
  */
 
 include '../includes/db-config.php';
 
-// Session kontrolü
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: /PortofiloProject/admin/login.php');
+    header('Location: /PortfolioProject/admin/login.php');
     exit;
 }
 
-// Projeler listesi
 $projects = [];
 $messages = [];
 try {
@@ -24,235 +21,172 @@ try {
     $stmtMsg->execute();
     $messages = $stmtMsg->fetchAll();
 } catch (PDOException $e) {
-    echo 'Database error: ' . $e->getMessage();
+    $dbError = 'Database error: ' . $e->getMessage();
 }
 ?>
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <style>
-        .admin-header {
-            background: linear-gradient(135deg, #2563eb, #1e40af);
-            color: white;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .admin-container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-        .project-item {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        .project-item h3 {
-            color: #2563eb;
-            margin-bottom: 10px;
-        }
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        .btn-small {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-            flex: 1;
-        }
-        .btn-edit {
-            background: #3b82f6;
-            color: white;
-        }
-        .btn-delete {
-            background: #ef4444;
-            color: white;
-        }
-        .btn-add {
-            background: #10b981;
-            color: white;
-            padding: 12px 30px;
-            margin-bottom: 30px;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal.active {
-            display: flex;
-        }
-        .modal-content {
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            max-width: 500px;
-            width: 90%;
-        }
-        .close-btn {
-            float: right;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #6b7280;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #e5e7eb;
-            border-radius: 5px;
-        }
-        .section-divider {
-            margin: 60px 0 30px;
-            border-bottom: 2px solid #e5e7eb;
-            padding-bottom: 10px;
-        }
-        .messages-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .messages-table th, .messages-table td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        .messages-table th {
-            background: #f3f4f6;
-            font-weight: 600;
-        }
-    </style>
+    <?php $adminPageTitle = 'Dashboard'; include '../includes/admin-head.php'; ?>
 </head>
-<body>
+<body class="admin-page">
+    <?php include '../includes/nav.php'; ?>
+
+    <?php if (isset($dbError)): ?>
+        <div style="background: var(--error-light); color: var(--error-color); padding: var(--spacing-lg); text-align: center;">
+            <?php echo htmlspecialchars($dbError); ?>
+        </div>
+    <?php endif; ?>
+
     <div class="admin-header">
-        <h1>Admin Dashboard</h1>
-        <a href="logout.php" style="color: white; text-decoration: none;">Logout</a>
+        <div>
+            <h1 data-i18n="admin.dashboard.title">Admin Dashboard</h1>
+            <div class="user-info">
+                <span data-i18n="admin.dashboard.loggedAs">Logged in as:</span>
+                <strong><?php echo htmlspecialchars($_SESSION['admin_username'] ?? 'Admin'); ?></strong>
+            </div>
+        </div>
     </div>
 
     <div class="admin-container">
-        <h2>Projects Management</h2>
-        <button class="btn-add" onclick="openAddModal()">+ Add New Project</button>
+        <!-- Projects Section -->
+        <div class="dashboard-section">
+            <h2 class="dashboard-section-title" data-i18n="admin.dashboard.projects">Projects Management</h2>
+            <button class="btn btn-success" onclick="openAddModal()" style="margin-bottom: var(--spacing-2xl);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span data-i18n="admin.dashboard.addProject">Add New Project</span>
+            </button>
 
-        <div class="dashboard-grid">
-            <?php foreach ($projects as $project): ?>
-                <div class="project-item">
-                    <h3><?php echo htmlspecialchars($project['title']); ?></h3>
-                    <p><?php echo htmlspecialchars($project['description']); ?></p>
-                    <p><strong>Tech:</strong> <?php echo htmlspecialchars($project['technologies']); ?></p>
-                    <div class="btn-group">
-                        <button class="btn-small btn-edit" onclick="editProject(<?php echo $project['id']; ?>)">Edit</button>
-                        <button class="btn-small btn-delete" onclick="deleteProject(<?php echo $project['id']; ?>)">Delete</button>
+            <div class="dashboard-grid">
+                <?php foreach ($projects as $project): ?>
+                    <div class="admin-card">
+                        <h3><?php echo htmlspecialchars($project['title']); ?></h3>
+                        <p><?php echo htmlspecialchars($project['description']); ?></p>
+                        <p style="font-size: 0.875rem; color: var(--text-light);">
+                            <strong data-i18n="admin.dashboard.technologies">Technologies:</strong>
+                            <?php echo htmlspecialchars($project['technologies']); ?>
+                        </p>
+                        <div class="admin-actions">
+                            <button class="btn btn-primary btn-small" onclick="editProject(<?php echo intval($project['id']); ?>)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                <span data-i18n="admin.action.edit">Edit</span>
+                            </button>
+                            <button class="btn btn-danger btn-small" onclick="deleteProject(<?php echo intval($project['id']); ?>)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                                <span data-i18n="admin.action.delete">Delete</span>
+                            </button>
+                        </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+
+                <?php if (empty($projects)): ?>
+                    <p style="color: var(--text-light); padding: var(--spacing-2xl);" data-i18n="admin.dashboard.noProjects">No projects yet.</p>
+                <?php endif; ?>
+            </div>
         </div>
 
-        <h2 class="section-divider">Messages Received</h2>
-        <?php if (count($messages) > 0): ?>
-            <div style="overflow-x: auto;">
-                <table class="messages-table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Message</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($messages as $msg): ?>
+        <!-- Messages Section -->
+        <div class="dashboard-section">
+            <h2 class="dashboard-section-title" data-i18n="admin.dashboard.messages">Messages Received</h2>
+            <?php if (count($messages) > 0): ?>
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
                             <tr>
-                                <td><?php echo htmlspecialchars(date('d M Y, H:i', strtotime($msg['created_at']))); ?></td>
-                                <td><?php echo htmlspecialchars($msg['name']); ?></td>
-                                <td><a href="mailto:<?php echo htmlspecialchars($msg['email']); ?>"><?php echo htmlspecialchars($msg['email']); ?></a></td>
-                                <td><?php echo nl2br(htmlspecialchars($msg['message'])); ?></td>
+                                <th data-i18n="admin.table.date">Date</th>
+                                <th data-i18n="admin.table.name">Name</th>
+                                <th data-i18n="admin.table.email">Email</th>
+                                <th data-i18n="admin.table.message">Message</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        <?php else: ?>
-            <p>No messages received yet.</p>
-        <?php endif; ?>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($messages as $msg): ?>
+                                <tr>
+                                    <td style="white-space: nowrap;"><?php echo htmlspecialchars(date('d M Y, H:i', strtotime($msg['created_at']))); ?></td>
+                                    <td><?php echo htmlspecialchars($msg['name']); ?></td>
+                                    <td><a href="mailto:<?php echo htmlspecialchars($msg['email']); ?>" style="color: var(--primary-color); text-decoration: none;"><?php echo htmlspecialchars($msg['email']); ?></a></td>
+                                    <td><?php echo nl2br(htmlspecialchars($msg['message'])); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php else: ?>
+                <p style="color: var(--text-light); text-align: center; padding: var(--spacing-2xl);" data-i18n="admin.dashboard.noMessages">No messages received yet.</p>
+            <?php endif; ?>
+        </div>
     </div>
 
     <!-- Add Project Modal -->
-    <div id="addModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeAddModal()">&times;</span>
-            <h2>Add New Project</h2>
-            <form id="addForm" onsubmit="handleAddProject(event)">
+    <div id="projectModal" class="admin-modal">
+        <div class="admin-modal-content">
+            <div class="admin-modal-header">
+                <span id="modalTitle" data-i18n="admin.modal.addTitle">Add New Project</span>
+                <button class="admin-modal-close" onclick="closeModal()" aria-label="Close modal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <form id="projectForm" class="admin-form" onsubmit="handleProjectSubmit(event)">
                 <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" name="title" required>
+                    <label for="projectTitle" data-i18n="admin.form.title">Project Title *</label>
+                    <input type="text" id="projectTitle" name="title" required>
                 </div>
                 <div class="form-group">
-                    <label>Description</label>
-                    <textarea name="description" rows="4" required></textarea>
+                    <label for="projectDescription" data-i18n="admin.form.description">Description *</label>
+                    <textarea id="projectDescription" name="description" rows="5" required></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Technologies</label>
-                    <input type="text" name="technologies" placeholder="e.g. PHP, MySQL, JavaScript">
+                    <label for="projectTech" data-i18n="admin.form.technologies">Technologies *</label>
+                    <input type="text" id="projectTech" name="technologies" required>
                 </div>
                 <div class="form-group">
-                    <label>Project Link (optional)</label>
-                    <input type="url" name="link">
+                    <label for="projectLink" data-i18n="admin.form.link">Project Link (optional)</label>
+                    <input type="url" id="projectLink" name="link">
                 </div>
-                <button type="submit" class="btn-add">Add Project</button>
+                <div class="admin-form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()" data-i18n="admin.action.cancel">Cancel</button>
+                    <button type="submit" class="btn btn-primary" data-i18n="admin.form.save">Save Project</button>
+                </div>
             </form>
         </div>
     </div>
 
+    <script src="/PortfolioProject/js/i18n.js"></script>
+    <script src="/PortfolioProject/js/main.js"></script>
+    <script src="/PortfolioProject/js/dark-mode.js"></script>
     <script>
+        let editingProjectId = null;
+
         function openAddModal() {
-            document.getElementById('addModal').classList.add('active');
+            editingProjectId = null;
+            const modalTitle = document.getElementById('modalTitle');
+            modalTitle.textContent = (typeof i18n !== 'undefined') ? i18n.t('admin.modal.addTitle') : 'Add New Project';
+            document.getElementById('projectForm').reset();
+            document.getElementById('projectModal').classList.add('active');
+            document.getElementById('projectTitle').focus();
         }
 
-        function closeAddModal() {
-            document.getElementById('addModal').classList.remove('active');
+        function closeModal() {
+            document.getElementById('projectModal').classList.remove('active');
         }
 
-        async function handleAddProject(event) {
+        function editProject(id) {
+            window.location.href = '/PortfolioProject/admin/edit-project.php?id=' + id;
+        }
+
+        function deleteProject(id) {
+            const msg = (typeof i18n !== 'undefined') ? i18n.t('admin.confirm.delete') : 'Are you sure you want to delete this project?';
+            if (confirm(msg)) {
+                window.location.href = '/PortfolioProject/admin/delete-project.php?id=' + id;
+            }
+        }
+
+        async function handleProjectSubmit(event) {
             event.preventDefault();
-            const formData = new FormData(document.getElementById('addForm'));
+            const formData = new FormData(document.getElementById('projectForm'));
 
             try {
-                const response = await fetch('/PortofiloProject/admin/add-project.php', {
+                const response = await fetch('/PortfolioProject/admin/add-project.php', {
                     method: 'POST',
                     body: formData
                 });
@@ -260,26 +194,24 @@ try {
                 const result = await response.json();
 
                 if (result.success) {
-                    alert('Project added successfully!');
+                    alert((typeof i18n !== 'undefined') ? i18n.t('admin.alert.saved') : 'Project saved successfully!');
                     location.reload();
                 } else {
                     alert('Error: ' + result.message);
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('An error occurred');
+                alert((typeof i18n !== 'undefined') ? i18n.t('admin.alert.error') : 'An error occurred');
             }
         }
 
-        function deleteProject(id) {
-            if (confirm('Are you sure you want to delete this project?')) {
-                window.location.href = '/PortofiloProject/admin/delete-project.php?id=' + id;
-            }
-        }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
 
-        function editProject(id) {
-            window.location.href = '/PortofiloProject/admin/edit-project.php?id=' + id;
-        }
+        document.getElementById('projectModal').addEventListener('click', (e) => {
+            if (e.target.id === 'projectModal') closeModal();
+        });
     </script>
 </body>
 </html>
