@@ -1,0 +1,36 @@
+# System Files
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# PHP
+composer.lock
+/vendor/
+
+# Database
+*.sql.bak
+
+# Environment
+.env
+.env.local
+
+# Temp Files
+*.tmp
+*.temp
+/temp/
+/tmp/
+
+# Logs
+*.log
+
+# Node (if using)
+node_modules/
+package-lock.json
