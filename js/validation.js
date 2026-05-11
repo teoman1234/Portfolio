@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // If validation passes, submit via AJAX
             try {
-                const response = await fetch('/api/submit-contact.php', {
+                const response = await fetch('/PortofiloProject/api/submit-contact.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'

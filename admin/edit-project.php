@@ -7,14 +7,14 @@ include '../includes/db-config.php';
 
 // Session kontrolü
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: login.php');
+    header('Location: /PortofiloProject/admin/login.php');
     exit;
 }
 
 $project_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 if ($project_id === 0) {
-    header('Location: dashboard.php');
+    header('Location: /PortofiloProject/admin/dashboard.php');
     exit;
 }
 
@@ -25,7 +25,7 @@ try {
     $project = $stmt->fetch();
 
     if (!$project) {
-        header('Location: dashboard.php');
+        header('Location: /PortofiloProject/admin/dashboard.php');
         exit;
     }
 } catch (PDOException $e) {
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Project</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <style>
         .admin-header {
             background: linear-gradient(135deg, #2563eb, #1e40af);
@@ -185,7 +185,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="btn-group">
                     <button type="submit" class="btn btn-save">Save Changes</button>
-                    <a href="dashboard.php" class="btn btn-cancel" style="text-decoration: none; display: flex; align-items: center; justify-content: center;">Cancel</a>
+                    <a href="/PortofiloProject/admin/dashboard.php" class="btn btn-cancel" style="text-decoration: none; display: flex; align-items: center; justify-content: center;">Cancel</a>
                 </div>
             </form>
         </div>

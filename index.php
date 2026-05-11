@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Full-Stack Web Developer Portfolio">
     <title>My Portfolio - Full-Stack Developer</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>
@@ -16,7 +16,7 @@
         <section class="hero">
             <div class="container">
                 <div class="hero-content">
-                    <img src="/images/profile.jpg" alt="Profile Picture" class="hero-image">
+                    <img src="/PortofiloProject/images/profile.jpg" alt="Profile Picture" class="hero-image">
                     <h1>Hi, I'm a Full-Stack Developer</h1>
                     <p>Building modern web applications with HTML5, CSS3, JavaScript, PHP & MySQL</p>
                     <p class="subtitle-small">Currently: 4th Year Software Engineering @ Haliç University</p>
@@ -97,8 +97,8 @@
 
     <?php include 'includes/footer.php'; ?>
 
-    <script src="/js/validation.js"></script>
-    <script src="/js/main.js"></script>
-    <script src="/js/dark-mode.js"></script>
+    <script src="/PortofiloProject/js/validation.js"></script>
+    <script src="/PortofiloProject/js/main.js"></script>
+    <script src="/PortofiloProject/js/dark-mode.js"></script>
 </body>
 </html>

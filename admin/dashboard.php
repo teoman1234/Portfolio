@@ -8,18 +8,23 @@ include '../includes/db-config.php';
 
 // Session kontrolü
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: login.php');
+    header('Location: /PortofiloProject/admin/login.php');
     exit;
 }
 
 // Projeler listesi
 $projects = [];
+$messages = [];
 try {
     $stmt = $pdo->prepare('SELECT id, title, description, technologies FROM projects ORDER BY created_at DESC');
     $stmt->execute();
     $projects = $stmt->fetchAll();
+
+    $stmtMsg = $pdo->prepare('SELECT id, name, email, message, created_at FROM messages ORDER BY created_at DESC');
+    $stmtMsg->execute();
+    $messages = $stmtMsg->fetchAll();
 } catch (PDOException $e) {
-    $error = 'Database error: ' . $e->getMessage();
+    echo 'Database error: ' . $e->getMessage();
 }
 ?>
 <!DOCTYPE html>
@@ -28,7 +33,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <style>
         .admin-header {
             background: linear-gradient(135deg, #2563eb, #1e40af);
@@ -129,6 +134,28 @@ try {
             border: 2px solid #e5e7eb;
             border-radius: 5px;
         }
+        .section-divider {
+            margin: 60px 0 30px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+        .messages-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .messages-table th, .messages-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .messages-table th {
+            background: #f3f4f6;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -154,6 +181,34 @@ try {
                 </div>
             <?php endforeach; ?>
         </div>
+
+        <h2 class="section-divider">Messages Received</h2>
+        <?php if (count($messages) > 0): ?>
+            <div style="overflow-x: auto;">
+                <table class="messages-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($messages as $msg): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars(date('d M Y, H:i', strtotime($msg['created_at']))); ?></td>
+                                <td><?php echo htmlspecialchars($msg['name']); ?></td>
+                                <td><a href="mailto:<?php echo htmlspecialchars($msg['email']); ?>"><?php echo htmlspecialchars($msg['email']); ?></a></td>
+                                <td><?php echo nl2br(htmlspecialchars($msg['message'])); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php else: ?>
+            <p>No messages received yet.</p>
+        <?php endif; ?>
     </div>
 
     <!-- Add Project Modal -->
@@ -197,7 +252,7 @@ try {
             const formData = new FormData(document.getElementById('addForm'));
 
             try {
-                const response = await fetch('/admin/add-project.php', {
+                const response = await fetch('/PortofiloProject/admin/add-project.php', {
                     method: 'POST',
                     body: formData
                 });
@@ -218,12 +273,12 @@ try {
 
         function deleteProject(id) {
             if (confirm('Are you sure you want to delete this project?')) {
-                window.location.href = '/admin/delete-project.php?id=' + id;
+                window.location.href = '/PortofiloProject/admin/delete-project.php?id=' + id;
             }
         }
 
         function editProject(id) {
-            window.location.href = '/admin/edit-project.php?id=' + id;
+            window.location.href = '/PortofiloProject/admin/edit-project.php?id=' + id;
         }
     </script>
 </body>

@@ -6,7 +6,7 @@
 // Load projects from database via AJAX
 const loadProjects = async () => {
     try {
-        const response = await fetch('/api/get-projects.php');
+        const response = await fetch('/PortofiloProject/api/get-projects.php');
         const projects = await response.json();
 
         const projectsContainer = document.getElementById('projectsContainer');

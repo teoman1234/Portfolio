@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <style>
         .login-container {
             display: flex;
@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="submit" class="btn">Login</button>
             </form>
             <p style="text-align: center; margin-top: 20px; color: #6b7280;">
-                <a href="/" style="color: #2563eb; text-decoration: none;">Back to Home</a>
+                <a href="/PortofiloProject/" style="color: #2563eb; text-decoration: none;">Back to Home</a>
             </p>
         </div>
     </div>

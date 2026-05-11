@@ -7,12 +7,12 @@ include '../includes/db-config.php';
 
 // Session kontrolü
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: login.php');
+    header('Location: /PortofiloProject/admin/login.php');
     exit;
 }
 
 if (!isset($_GET['id'])) {
-    header('Location: dashboard.php');
+    header('Location: /PortofiloProject/admin/dashboard.php');
     exit;
 }
 

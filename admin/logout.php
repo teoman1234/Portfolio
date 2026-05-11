@@ -6,5 +6,5 @@
 include '../includes/db-config.php';
 
 session_destroy();
-header('Location: /');
+header('Location: /PortofiloProject/');
 exit;
