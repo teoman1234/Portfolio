@@ -29,6 +29,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 session_regenerate_id(true);
                 $_SESSION['admin_id'] = $user['id'];
                 $_SESSION['admin_username'] = $username;
+
+                // "Remember Me": kullanıcı adını 30 gün boyunca cookie'de tut (sadece form auto-fill için)
+                if (!empty($_POST['remember'])) {
+                    setcookie('remember_username', $username, [
+                        'expires'  => time() + 60 * 60 * 24 * 30,
+                        'path'     => '/',
+                        'httponly' => true,
+                        'samesite' => 'Lax',
+                    ]);
+                } else {
+                    setcookie('remember_username', '', time() - 3600, '/');
+                }
+
                 header('Location: /PortfolioProject/admin/dashboard.php');
                 exit;
             } else {
@@ -56,15 +69,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="login-error"><?php echo htmlspecialchars($error); ?></div>
                 <?php endif; ?>
                 <form method="POST" class="admin-form">
+                    <?php
+                        $rememberedUser = $_POST['username'] ?? $_COOKIE['remember_username'] ?? '';
+                        $isRemembered   = !empty($_COOKIE['remember_username']);
+                    ?>
                     <div class="form-group">
                         <label for="username" data-i18n="admin.login.username">Username</label>
                         <input type="text" id="username" name="username"
-                               value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>"
+                               value="<?php echo htmlspecialchars($rememberedUser); ?>"
                                required autofocus autocomplete="username">
                     </div>
                     <div class="form-group">
                         <label for="password" data-i18n="admin.login.password">Password</label>
                         <input type="password" id="password" name="password" required autocomplete="current-password">
+                    </div>
+                    <div class="form-group form-check">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="remember" name="remember" value="1" <?php echo $isRemembered ? 'checked' : ''; ?>>
+                            <span data-i18n="admin.login.remember">Remember me</span>
+                        </label>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block" data-i18n="admin.login.submit">Login</button>
                 </form>

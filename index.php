@@ -106,5 +106,6 @@
     <script src="/PortfolioProject/js/validation.js"></script>
     <script src="/PortfolioProject/js/main.js"></script>
     <script src="/PortfolioProject/js/dark-mode.js"></script>
+    <script src="/PortfolioProject/js/cookie-consent.js"></script>
 </body>
 </html>

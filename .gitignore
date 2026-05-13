@@ -22,6 +22,9 @@ composer.lock
 .env
 .env.local
 
+# Local DB credentials override (production secrets)
+includes/db-config.local.php
+
 # Temp Files
 *.tmp
 *.temp

@@ -4,10 +4,18 @@
  * PDO ile güvenli veritabanı bağlantısı
  */
 
-$host = 'localhost';
-$db_name = 'portfolio_db';
-$user = 'root';
-$password = '';
+// Local defaults (XAMPP). Production'da bu dosyayı düzenlemek yerine
+// includes/db-config.local.php oluşturup oradan override edilmesi önerilir.
+$host     = getenv('DB_HOST')     ?: 'localhost';
+$db_name  = getenv('DB_NAME')     ?: 'portfolio_db';
+$user     = getenv('DB_USER')     ?: 'root';
+$password = getenv('DB_PASSWORD') ?: '';
+
+// Production override (gitignore'lı dosya, repoya gitmez)
+$localConfig = __DIR__ . '/db-config.local.php';
+if (file_exists($localConfig)) {
+    include $localConfig;
+}
 
 try {
     $pdo = new PDO(

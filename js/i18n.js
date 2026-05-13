@@ -68,6 +68,11 @@ const i18n = {
             'admin.login.password': 'Şifre',
             'admin.login.submit': 'Giriş Yap',
             'admin.login.backHome': '← Anasayfaya Dön',
+            'admin.login.remember': 'Beni hatırla',
+
+            // Cookie consent
+            'cookie.message': 'Bu site tercihlerinizi (karanlık mod, dil) hatırlamak ve admin girişini sağlamak için çerez kullanır. Devam ederek kullanımı kabul etmiş olursunuz.',
+            'cookie.accept': 'Kabul Et',
 
             // Admin - Dashboard
             'admin.dashboard.title': 'Admin Paneli',
@@ -167,6 +172,11 @@ const i18n = {
             'admin.login.password': 'Password',
             'admin.login.submit': 'Login',
             'admin.login.backHome': '← Back to Home',
+            'admin.login.remember': 'Remember me',
+
+            // Cookie consent
+            'cookie.message': 'This site uses cookies to remember your preferences (dark mode, language) and to enable the admin login. By continuing, you accept their use.',
+            'cookie.accept': 'Accept',
 
             // Admin - Dashboard
             'admin.dashboard.title': 'Admin Dashboard',

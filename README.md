@@ -136,12 +136,11 @@ CREATE TABLE messages (
 
 ---
 
-## 🔐 Admin Credentials (Default)
+## 🔐 Admin Credentials
 
-**Username:** `admin`  
-**Password:** `admin123`
+The default admin credentials are provided privately for evaluation purposes and are **not** documented in this public repository.
 
-⚠️ **Important:** Change these credentials in production!
+⚠️ **Important:** Always change the default admin credentials before deploying to production. You can generate a new bcrypt hash with any standard tool (e.g., PHP's `password_hash()`) and update the `users` table.
 
 ---
 
