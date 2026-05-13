@@ -594,6 +594,14 @@ body.dark-mode .hero::before {
     padding: 0 2px;
 }
 
+body.dark-mode .hero-name {
+    color: #ffffff;
+    background: linear-gradient(120deg, transparent 0%, transparent 60%, rgba(168, 197, 232, 0.25) 60%, rgba(168, 197, 232, 0.25) 100%);
+    background-size: 100% 0.5em;
+    background-repeat: no-repeat;
+    background-position: 0 88%;
+}
+
 .hero p {
     font-size: 1.2rem;
     margin-bottom: 10px;
