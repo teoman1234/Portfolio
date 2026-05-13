@@ -5,13 +5,10 @@ RUN docker-php-ext-install pdo pdo_mysql mysqli \
 
 COPY . /var/www/html/
 
-RUN chown -R www-data:www-data /var/www/html
+RUN chown -R www-data:www-data /var/www/html \
+    && sed -i 's|AllowOverride None|AllowOverride All|g' /etc/apache2/apache2.conf
 
-RUN sed -i 's|<Directory /var/www/>|<Directory /var/www/html/>|' /etc/apache2/apache2.conf \
-    && sed -i 's|AllowOverride None|AllowOverride All|' /etc/apache2/apache2.conf
-
-RUN echo "Listen \${PORT:-80}" > /etc/apache2/ports.conf \
-    && sed -i 's|:80|:${PORT}|g' /etc/apache2/sites-available/000-default.conf
-
+ENV PORT=80
 EXPOSE 80
-CMD ["apache2-foreground"]
+
+CMD sh -c 'sed -i "s/80/${PORT}/g" /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf && apache2-foreground'
