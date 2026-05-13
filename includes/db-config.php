@@ -6,10 +6,11 @@
 
 // Local defaults (XAMPP). Production'da bu dosyayı düzenlemek yerine
 // includes/db-config.local.php oluşturup oradan override edilmesi önerilir.
-$host     = getenv('DB_HOST')     ?: 'localhost';
-$db_name  = getenv('DB_NAME')     ?: 'portfolio_db';
-$user     = getenv('DB_USER')     ?: 'root';
-$password = getenv('DB_PASSWORD') ?: '';
+$host     = getenv('DB_HOST')     ?: (getenv('MYSQLHOST')     ?: 'localhost');
+$port     = getenv('DB_PORT')     ?: (getenv('MYSQLPORT')     ?: '3306');
+$db_name  = getenv('DB_NAME')     ?: (getenv('MYSQLDATABASE') ?: 'portfolio_db');
+$user     = getenv('DB_USER')     ?: (getenv('MYSQLUSER')     ?: 'root');
+$password = getenv('DB_PASSWORD') ?: (getenv('MYSQLPASSWORD') ?: '');
 
 // Production override (gitignore'lı dosya, repoya gitmez)
 $localConfig = __DIR__ . '/db-config.local.php';
@@ -19,7 +20,7 @@ if (file_exists($localConfig)) {
 
 try {
     $pdo = new PDO(
-        "mysql:host=$host;dbname=$db_name;charset=utf8mb4",
+        "mysql:host=$host;port=$port;dbname=$db_name;charset=utf8mb4",
         $user,
         $password,
         [

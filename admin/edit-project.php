@@ -6,14 +6,14 @@
 include '../includes/db-config.php';
 
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: /PortfolioProject/admin/login.php');
+    header('Location: /admin/login.php');
     exit;
 }
 
 $project_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 if ($project_id === 0) {
-    header('Location: /PortfolioProject/admin/dashboard.php');
+    header('Location: /admin/dashboard.php');
     exit;
 }
 
@@ -23,7 +23,7 @@ try {
     $project = $stmt->fetch();
 
     if (!$project) {
-        header('Location: /PortfolioProject/admin/dashboard.php');
+        header('Location: /admin/dashboard.php');
         exit;
     }
 } catch (PDOException $e) {
@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="url" id="link" name="link" value="<?php echo htmlspecialchars($project['link'] ?? ''); ?>">
                     </div>
                     <div class="admin-form-actions">
-                        <a href="/PortfolioProject/admin/dashboard.php" class="btn btn-secondary" data-i18n="admin.action.cancel">Cancel</a>
+                        <a href="/admin/dashboard.php" class="btn btn-secondary" data-i18n="admin.action.cancel">Cancel</a>
                         <button type="submit" class="btn btn-success">
                             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
                             <span data-i18n="admin.edit.save">Save Changes</span>
@@ -114,8 +114,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 
-    <script src="/PortfolioProject/js/i18n.js"></script>
-    <script src="/PortfolioProject/js/main.js"></script>
-    <script src="/PortfolioProject/js/dark-mode.js"></script>
+    <script src="/js/i18n.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/dark-mode.js"></script>
 </body>
 </html>

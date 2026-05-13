@@ -6,7 +6,7 @@
 include '../includes/db-config.php';
 
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: /PortfolioProject/admin/login.php');
+    header('Location: /admin/login.php');
     exit;
 }
 
@@ -151,9 +151,9 @@ try {
         </div>
     </div>
 
-    <script src="/PortfolioProject/js/i18n.js"></script>
-    <script src="/PortfolioProject/js/main.js"></script>
-    <script src="/PortfolioProject/js/dark-mode.js"></script>
+    <script src="/js/i18n.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/dark-mode.js"></script>
     <script>
         let editingProjectId = null;
 
@@ -171,13 +171,13 @@ try {
         }
 
         function editProject(id) {
-            window.location.href = '/PortfolioProject/admin/edit-project.php?id=' + id;
+            window.location.href = '/admin/edit-project.php?id=' + id;
         }
 
         function deleteProject(id) {
             const msg = (typeof i18n !== 'undefined') ? i18n.t('admin.confirm.delete') : 'Are you sure you want to delete this project?';
             if (confirm(msg)) {
-                window.location.href = '/PortfolioProject/admin/delete-project.php?id=' + id;
+                window.location.href = '/admin/delete-project.php?id=' + id;
             }
         }
 
@@ -186,7 +186,7 @@ try {
             const formData = new FormData(document.getElementById('projectForm'));
 
             try {
-                const response = await fetch('/PortfolioProject/admin/add-project.php', {
+                const response = await fetch('/admin/add-project.php', {
                     method: 'POST',
                     body: formData
                 });

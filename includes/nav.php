@@ -5,7 +5,7 @@
 ?>
 <nav class="navbar" id="navbar">
     <div class="container">
-        <a href="/PortfolioProject/" class="nav-logo">Portfolio</a>
+        <a href="/" class="nav-logo">Portfolio</a>
 
         <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="navMenu">
             <span class="hamburger-bar"></span>
@@ -15,7 +15,7 @@
 
         <div class="nav-menu" id="navMenu" role="dialog" aria-label="Navigation menu">
             <ul class="nav-links">
-                <li><a href="/PortfolioProject/" class="nav-link" data-i18n="nav.home">Home</a></li>
+                <li><a href="/" class="nav-link" data-i18n="nav.home">Home</a></li>
                 <li><a href="#about" class="nav-link" data-i18n="nav.about">About</a></li>
                 <li><a href="#projects" class="nav-link" data-i18n="nav.projects">Projects</a></li>
                 <li><a href="#contact" class="nav-link" data-i18n="nav.contact">Contact</a></li>
@@ -37,10 +37,10 @@
                 </button>
 
                 <?php if (isset($_SESSION['admin_id'])): ?>
-                    <a href="/PortfolioProject/admin/dashboard.php" class="nav-admin-btn" data-i18n="nav.admin">Admin</a>
-                    <a href="/PortfolioProject/admin/logout.php" class="nav-admin-btn nav-admin-btn--danger" data-i18n="nav.logout">Logout</a>
+                    <a href="/admin/dashboard.php" class="nav-admin-btn" data-i18n="nav.admin">Admin</a>
+                    <a href="/admin/logout.php" class="nav-admin-btn nav-admin-btn--danger" data-i18n="nav.logout">Logout</a>
                 <?php else: ?>
-                    <a href="/PortfolioProject/admin/login.php" class="nav-admin-btn" data-i18n="nav.login">Admin Login</a>
+                    <a href="/admin/login.php" class="nav-admin-btn" data-i18n="nav.login">Admin Login</a>
                 <?php endif; ?>
             </div>
         </div>

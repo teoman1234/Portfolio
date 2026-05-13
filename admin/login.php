@@ -7,7 +7,7 @@ include '../includes/db-config.php';
 
 // Zaten giriş yapmışsa dashboard'a yönlendir
 if (isset($_SESSION['admin_id'])) {
-    header('Location: /PortfolioProject/admin/dashboard.php');
+    header('Location: /admin/dashboard.php');
     exit;
 }
 
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     setcookie('remember_username', '', time() - 3600, '/');
                 }
 
-                header('Location: /PortfolioProject/admin/dashboard.php');
+                header('Location: /admin/dashboard.php');
                 exit;
             } else {
                 $error = 'Invalid username or password';
@@ -92,14 +92,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <button type="submit" class="btn btn-primary btn-block" data-i18n="admin.login.submit">Login</button>
                 </form>
                 <div class="login-footer">
-                    <a href="/PortfolioProject/" data-i18n="admin.login.backHome">← Back to Home</a>
+                    <a href="/" data-i18n="admin.login.backHome">← Back to Home</a>
                 </div>
             </div>
         </div>
     </main>
 
-    <script src="/PortfolioProject/js/i18n.js"></script>
-    <script src="/PortfolioProject/js/main.js"></script>
-    <script src="/PortfolioProject/js/dark-mode.js"></script>
+    <script src="/js/i18n.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/dark-mode.js"></script>
 </body>
 </html>

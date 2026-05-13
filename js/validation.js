@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const res  = await fetch('/PortfolioProject/api/submit-contact.php', {
+            const res  = await fetch('/api/submit-contact.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&message=${encodeURIComponent(message)}`

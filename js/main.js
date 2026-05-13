@@ -56,7 +56,7 @@ const loadProjects = async () => {
     if (!container) return;
 
     try {
-        const response = await fetch('/PortfolioProject/api/get-projects.php');
+        const response = await fetch('/api/get-projects.php');
 
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);

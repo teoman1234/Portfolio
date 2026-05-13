@@ -5,7 +5,7 @@
  */
 
 // Base URL configuration
-define('BASE_URL', '/PortfolioProject');
+define('BASE_URL', getenv('BASE_URL') ?: '');
 define('BASE_PATH', dirname(__DIR__));
 
 // API endpoints

@@ -18,7 +18,7 @@
         <section class="hero">
             <div class="container">
                 <div class="hero-content">
-                    <img src="/PortfolioProject/images/profile.jpg" alt="Profile Picture" class="hero-image">
+                    <img src="/images/profile.jpg" alt="Profile Picture" class="hero-image">
                     <h1>
                         <span data-i18n="hero.greeting">Hi, my name is</span>
                         <span class="hero-name" data-i18n="hero.name">Teoman Yüce</span>.<br>
@@ -106,10 +106,10 @@
 
     <?php include 'includes/footer.php'; ?>
 
-    <script src="/PortfolioProject/js/i18n.js?v=<?php echo time(); ?>"></script>
-    <script src="/PortfolioProject/js/validation.js?v=<?php echo time(); ?>"></script>
-    <script src="/PortfolioProject/js/main.js?v=<?php echo time(); ?>"></script>
-    <script src="/PortfolioProject/js/dark-mode.js?v=<?php echo time(); ?>"></script>
-    <script src="/PortfolioProject/js/cookie-consent.js?v=<?php echo time(); ?>"></script>
+    <script src="/js/i18n.js?v=<?php echo time(); ?>"></script>
+    <script src="/js/validation.js?v=<?php echo time(); ?>"></script>
+    <script src="/js/main.js?v=<?php echo time(); ?>"></script>
+    <script src="/js/dark-mode.js?v=<?php echo time(); ?>"></script>
+    <script src="/js/cookie-consent.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>
