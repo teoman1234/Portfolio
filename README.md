@@ -1,6 +1,6 @@
 # 🎯 Full-Stack Web Portfolio
 
-Halic University 4th Year - Software Engineering Student
+Teoman Yüce - 21091000130 - Halic University 4th Year - Software Engineering Student
 
 A comprehensive full-stack web portfolio built with **HTML5, CSS3, JavaScript, PHP & MySQL**.
 
@@ -44,32 +44,40 @@ This portfolio showcases my skills and experience as a full-stack developer with
 
 ```
 PortfolioProject/
-├── index.php                 # Home page
+├── index.php                 # Home page (main entry point)
+├── router.php                # URL routing for PHP server
+├── Dockerfile                # Docker configuration for Railway deployment
+├── .htaccess                 # URL rewriting rules
 ├── admin/
-│   ├── login.php             # Admin login
-│   ├── dashboard.php         # Admin panel
-│   ├── add-project.php       # Add projects
+│   ├── login.php             # Admin login authentication
+│   ├── dashboard.php         # Admin panel (view all projects & messages)
+│   ├── add-project.php       # Add new projects
+│   ├── edit-project.php      # Edit existing projects
 │   ├── delete-project.php    # Delete projects
 │   └── logout.php            # Session logout
 ├── api/
-│   ├── get-projects.php      # AJAX: Fetch projects
-│   ├── get-messages.php      # AJAX: Fetch messages
+│   ├── get-projects.php      # AJAX: Fetch all projects (JSON response)
+│   ├── get-messages.php      # AJAX: Fetch contact messages (JSON response)
 │   └── submit-contact.php    # AJAX: Submit contact form
 ├── includes/
-│   ├── db-config.php         # Database configuration (PDO)
-│   ├── header.php            # Semantic header
-│   ├── nav.php               # Navigation bar
-│   └── footer.php            # Semantic footer
+│   ├── db-config.php         # Database configuration (PDO setup)
+│   ├── base.php              # Base HTML template (head, meta tags)
+│   ├── admin-head.php        # Admin-specific header includes
+│   ├── header.php            # Page header component
+│   ├── nav.php               # Navigation bar component
+│   └── footer.php            # Footer component
 ├── css/
-│   └── style.css             # Responsive styles
+│   └── style.css             # Responsive styles (Flexbox/Grid)
 ├── js/
-│   ├── main.js               # DOM manipulation & AJAX
-│   ├── validation.js         # Form validation
-│   └── dark-mode.js          # Theme toggle
+│   ├── main.js               # DOM manipulation & AJAX logic
+│   ├── validation.js         # Client-side form validation
+│   ├── dark-mode.js          # Dark/Light theme toggle
+│   ├── i18n.js               # Internationalization (multi-language support)
+│   └── cookie-consent.js     # Cookie consent banner
 ├── sql/
-│   └── database.sql          # Database schema & sample data
-├── images/                   # Project images
-└── PROJECT_PLAN.md           # Development plan
+│   └── database.sql          # MySQL schema & sample data
+├── images/                   # Project images & assets
+└── README.md                 # Project documentation
 ```
 
 ---
@@ -85,12 +93,14 @@ PortfolioProject/
 - ✅ Responsive navigation bar
 
 ### Admin Dashboard
-- ✅ Secure login system (session-based)
-- ✅ Add new projects
-- ✅ View all projects
-- ✅ Delete projects
-- ✅ View contact messages
-- ✅ Protected routes (session validation)
+- ✅ Secure login system (session-based authentication)
+- ✅ Add new projects with image upload
+- ✅ Edit existing projects (update content & metadata)
+- ✅ Delete projects (with confirmation)
+- ✅ View all projects (with pagination)
+- ✅ View contact messages from visitors
+- ✅ Protected routes (session validation on all admin pages)
+- ✅ Logout functionality with session cleanup
 
 ### Technical Features
 - ✅ AJAX integration (Fetch API)
@@ -136,11 +146,12 @@ CREATE TABLE messages (
 
 ---
 
-## 🔐 Admin Credentials
 
-The default admin credentials are provided privately for evaluation purposes and are **not** documented in this public repository.
+## � Live Demo & GitHub
 
-⚠️ **Important:** Always change the default admin credentials before deploying to production. You can generate a new bcrypt hash with any standard tool (e.g., PHP's `password_hash()`) and update the `users` table.
+- **Live Demo:** https://portfolio-production-2508.up.railway.app
+- **GitHub Repository:** https://github.com/teoman1234/Portfolio
+- **Source Code:** PortfolioProject.zip (available in submission)
 
 ---
 
@@ -150,22 +161,44 @@ The default admin credentials are provided privately for evaluation purposes and
 ```bash
 # Import the database
 mysql -u root < sql/database.sql
+
+# Or via PHPMyAdmin
+# Create database: portfolio_db
+# Import: sql/database.sql
 ```
 
-### 2. Run Locally
-- Place the folder in `htdocs` (for XAMPP)
-- Start Apache and MySQL
-- Visit `http://localhost/PortofiloProject`
+### 2. Run Locally (XAMPP)
+1. Place the folder in `htdocs` (XAMPP installation folder)
+2. Start Apache and MySQL from XAMPP Control Panel
+3. Visit `http://localhost/PortfolioProject`
+4. Admin panel: `http://localhost/PortfolioProject/admin/login.php`
 
-### 3. Admin Panel
-- Navigate to `http://localhost/PortofiloProject/admin/login.php`
-- Login with credentials above
-- Manage projects (add/edit/delete)
+### 3. Run with Docker & Railway (Production)
+```bash
+# Build Docker image
+docker build -t portfolio .
 
-### 4. Contact Form
-- Fill out the contact form on the home page
-- Messages are stored in the database
-- View messages in the admin panel
+# Run Docker container
+docker run -p 8080:8080 portfolio
+
+# Deploy to Railway
+# 1. Push code to GitHub
+# 2. Connect Railway to GitHub repository
+# 3. Railway auto-deploys on push (uses Dockerfile)
+# 4. Access live app via Railway URL
+```
+
+### 4. Admin Panel Features
+- **Login:** Enter admin credentials
+- **Manage Projects:** Add, edit, or delete projects
+- **View Messages:** See all contact form submissions
+- **Dashboard:** Overview of all activities
+
+### 5. Visitor Features
+- **Browse Projects:** View all portfolio projects
+- **Contact Form:** Send inquiries (messages stored in DB)
+- **Dark Mode:** Toggle theme preference
+- **Responsive Design:** Works on desktop, tablet, mobile
 
 ---
 
@@ -175,7 +208,7 @@ mysql -u root < sql/database.sql
 - ✅ Tablet (768px - 1199px)
 - ✅ Mobile (< 768px)
 
-All layouts tested and optimized for different screen sizes.
+All layouts tested and optimized for different screen sizes using CSS3 Flexbox and Grid.
 
 ---
 
@@ -187,36 +220,26 @@ All layouts tested and optimized for different screen sizes.
    $stmt->execute([$username]);
    ```
 
-2. **Password Hashing**
+2. **Password Hashing (bcrypt)**
    ```php
    password_verify($password, $user['password'])
    ```
 
 3. **Input Validation**
-   - Client-side (JavaScript)
-   - Server-side (PHP)
+   - Client-side (JavaScript regex & HTML5 validation)
+   - Server-side (PHP validation before database operations)
 
 4. **Session Management**
    ```php
    session_start();
-   if (!isset($_SESSION['admin_id'])) { /* redirect */ }
+   if (!isset($_SESSION['admin_id'])) { 
+       header('Location: login.php');
+   }
    ```
 
----
-
-## 📝 Sample Projects
-
-1. **Live Performance Analytics Portal**
-   - Stack: FastAPI, React, Python, JavaScript
-   - Real-time metrics dashboard
-
-2. **GraphRAG Recommendation Engine**
-   - Stack: Python, GraphRAG, Machine Learning
-   - AI-powered recommendations
-
-3. **Clinic Management System**
-   - Stack: Next.js, Prisma, PostgreSQL
-   - Patient and appointment management
+5. **Database Security**
+   - Environment variables for credentials (.env)
+   - .gitignore prevents db-config.local.php from being committed
 
 ---
 
@@ -225,7 +248,7 @@ All layouts tested and optimized for different screen sizes.
 **Institution:** Haliç University  
 **Year:** 4th Year  
 **Major:** Software Engineering  
-**Specialization:** Web Development & Database Management
+**Specialization:** Web Development & Backend Development
 
 **Internship:**  
 - **Company:** Kodiks Yazılım
@@ -234,20 +257,11 @@ All layouts tested and optimized for different screen sizes.
 
 ---
 
-## 📞 Contact
-
-- **Email:** your.email@example.com
-- **GitHub:** github.com/yourprofile
-- **LinkedIn:** linkedin.com/in/yourprofile
-
----
-
 ## 📜 License
 
-This project is created for educational purposes as part of the course curriculum.
+This project is created for educational purposes as part of the Halic University Software Engineering curriculum.
 
 ---
 
-**Built with ❤️ using HTML5, CSS3, JavaScript, PHP & MySQL**
+**Built with using HTML5, CSS3, JavaScript, PHP & MySQL**
 
-*Last Updated: 11 May 2026*
