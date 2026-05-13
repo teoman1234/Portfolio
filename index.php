@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/style.css?v=<?php echo time(); ?>">
 </head>
 <body>
     <?php include 'includes/nav.php'; ?>
@@ -19,7 +19,11 @@
             <div class="container">
                 <div class="hero-content">
                     <img src="/PortfolioProject/images/profile.jpg" alt="Profile Picture" class="hero-image">
-                    <h1 data-i18n="hero.title">Hi, I'm a full-stack developer.</h1>
+                    <h1>
+                        <span data-i18n="hero.greeting">Hi, my name is</span>
+                        <span class="hero-name" data-i18n="hero.name">Teoman Yüce</span>.<br>
+                        <span data-i18n="hero.role">I'm a full-stack developer.</span>
+                    </h1>
                     <p data-i18n="hero.subtitle">Focused on clean UI, solid APIs, and fast delivery.</p>
                     <p class="subtitle-small" data-i18n="hero.education">Haliç University, 4th year Software Engineering</p>
                 </div>
@@ -102,10 +106,10 @@
 
     <?php include 'includes/footer.php'; ?>
 
-    <script src="/PortfolioProject/js/i18n.js"></script>
-    <script src="/PortfolioProject/js/validation.js"></script>
-    <script src="/PortfolioProject/js/main.js"></script>
-    <script src="/PortfolioProject/js/dark-mode.js"></script>
-    <script src="/PortfolioProject/js/cookie-consent.js"></script>
+    <script src="/PortfolioProject/js/i18n.js?v=<?php echo time(); ?>"></script>
+    <script src="/PortfolioProject/js/validation.js?v=<?php echo time(); ?>"></script>
+    <script src="/PortfolioProject/js/main.js?v=<?php echo time(); ?>"></script>
+    <script src="/PortfolioProject/js/dark-mode.js?v=<?php echo time(); ?>"></script>
+    <script src="/PortfolioProject/js/cookie-consent.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>

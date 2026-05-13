@@ -581,6 +581,17 @@ body.dark-mode .hero::before {
     margin-bottom: 16px;
     max-width: 720px;
     color: var(--white);
+    line-height: 1.2;
+}
+
+.hero-name {
+    color: var(--navy-pale);
+    font-weight: 700;
+    background: linear-gradient(120deg, transparent 0%, transparent 60%, rgba(208, 218, 234, 0.18) 60%, rgba(208, 218, 234, 0.18) 100%);
+    background-size: 100% 0.5em;
+    background-repeat: no-repeat;
+    background-position: 0 88%;
+    padding: 0 2px;
 }
 
 .hero p {
@@ -937,14 +948,14 @@ body.dark-mode .btn-secondary:hover:not(:disabled) {
 
 /* Danger: kırmızı */
 .btn-danger {
-    background-color: var(--danger-color);
-    color: var(--white);
-    border: 2px solid var(--danger-color);
+    background-color: #ef4444 !important;
+    color: var(--white) !important;
+    border: 2px solid #ef4444 !important;
 }
 
 .btn-danger:hover:not(:disabled) {
-    background-color: var(--danger-dark);
-    border-color: var(--danger-dark);
+    background-color: #dc2626 !important;
+    border-color: #dc2626 !important;
     box-shadow: var(--shadow-md);
     transform: translateY(-1px);
 }

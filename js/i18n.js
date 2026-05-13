@@ -21,7 +21,9 @@ const i18n = {
 
             // Hero
             'hero.kicker': 'Portfolyo',
-            'hero.title': 'Merhaba, ben full-stack geliştiriciyim.',
+            'hero.greeting': 'Merhaba, ben',
+            'hero.name': 'Teoman Yüce',
+            'hero.role': 'Full-stack geliştiriciyim.',
             'hero.subtitle': 'Temiz arayüzler, sağlam API\'ler ve hızlı teslim odaklı çalışıyorum.',
             'hero.education': 'Haliç Üniversitesi, Yazılım Mühendisliği 4. sınıf',
 
@@ -125,7 +127,9 @@ const i18n = {
 
             // Hero
             'hero.kicker': 'Portfolio',
-            'hero.title': 'Hi, I\'m a full-stack developer.',
+            'hero.greeting': 'Hi, my name is',
+            'hero.name': 'Teoman Yüce',
+            'hero.role': 'I\'m a full-stack developer.',
             'hero.subtitle': 'Focused on clean UI, solid APIs, and fast delivery.',
             'hero.education': 'Haliç University, 4th year Software Engineering',
 
